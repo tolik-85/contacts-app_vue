@@ -20,7 +20,7 @@ export default {
         class="contact modal-trigger collection-item transparent waves-effect"
       >
         <div class="container">
-          <Contact :contact="contact" />
+          <Contact :contact />
         </div>
       </li>
     </ul>

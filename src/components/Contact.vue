@@ -1,11 +1,6 @@
 <script>
 export default {
-  props: {
-    contact: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ['contact'],
 }
 </script>
 
@@ -19,7 +14,7 @@ export default {
     </div>
     <div class="col s4">
       <span class=""
-        ><b>{{ this.contact.name }} {{ this.contact.familyName }}</b></span
+        ><b>{{ contact.name }} {{ contact.familyName }}</b></span
       >
     </div>
     <div class="col s4">

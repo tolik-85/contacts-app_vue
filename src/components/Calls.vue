@@ -1,4 +1,6 @@
-<script></script>
+<script>
+export default {}
+</script>
 
 <template>
   <div id="tab-2" class="col s12">
