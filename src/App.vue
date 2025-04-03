@@ -19,41 +19,26 @@ export default {
   data() {
     return {
       contacts: [],
-      calles: [],
-      favouriteContacts: [],
+      calles: [], // recentCalls
       currentContact: {},
     }
   },
 
-  watch: {
-    currentContact(newValue, oldValue) {
-      console.log('currentContact', newValue)
-      // console.log(oldValue)
-    },
-    contacts: {
-      deep: true,
-      handler() {
-        console.log('contacts', this.contacts)
-      },
+  computed: {
+    favouriteContacts() {
+      return this.contacts.filter(contact => contact.inFavourites) // is
     },
   },
+
   methods: {
     updateContact(updatedContact) {
-      this.contacts = this.contacts.map(contact =>
-        contact.id === updatedContact.id ? (contact = updatedContact) : contact
+      this.contacts = this.contacts.map(c =>
+        c.id === updatedContact.id ? updatedContact : c
       )
-      this.currentContact = updatedContact
     },
 
-    getFavourites() {
-      this.favouriteContacts = this.contacts.filter(contact => {
-        return contact.inFavourites
-      })
-    },
     deleteContact(deletedContact) {
-      this.contacts = this.contacts.filter(contact => {
-        return contact.id != deletedContact.id
-      })
+      this.contacts = this.contacts.filter(c => c.id != deletedContact.id)
     },
   },
 }
@@ -82,7 +67,7 @@ export default {
 
       <div class="nav-content">
         <ul class="tabs tabs-transparent">
-          <li @click="getFavourites" class="tab">
+          <li class="tab">
             <a href="#tab-1">
               <span class="material-symbols-outlined">star</span>
             </a>
@@ -106,7 +91,7 @@ export default {
       <Calls />
       <Contacts
         :contacts="contacts"
-        @currentContact="currentContact = $event"
+        @current-contact="currentContact = $event"
       />
     </div>
   </div>

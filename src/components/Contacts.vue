@@ -2,11 +2,11 @@
 import Contact from './Contact.vue'
 
 export default {
+  components: { Contact },
+
   props: ['contacts'],
 
-  emits: ['currentContact'],
-
-  components: { Contact },
+  emits: ['current-contact'],
 }
 </script>
 
@@ -17,7 +17,7 @@ export default {
         v-for="contact of contacts"
         :key="contact.id"
         :contact
-        @click="$emit('currentContact', { ...contact })"
+        @click="$emit('current-contact', { ...contact })"
       />
     </ul>
     <div class="fixed-action-btn">
