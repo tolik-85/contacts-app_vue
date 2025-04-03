@@ -1,5 +1,28 @@
 <script>
-export default {}
+export default {
+  props: ['currentContact'],
+  data() {
+    return {
+      localCurrentContact: { ...this.currentContact },
+    }
+  },
+  watch: {
+    currentContact(newValue) {
+      this.localCurrentContact = { ...newValue }
+      // console.log(this.localCurrentContact)
+    },
+  },
+  methods: {
+    changeFavourites() {
+      this.localCurrentContact.inFavourites =
+        !this.localCurrentContact.inFavourites
+      this.$emit('updatedContact', this.localCurrentContact)
+    },
+    deleteContact() {
+      this.$emit('deletedContact', this.localCurrentContact)
+    },
+  },
+}
 </script>
 
 <template>
@@ -12,15 +35,35 @@ export default {}
               <i class="material-symbols-outlined person">person</i>
             </div>
             <div class="col s6 right-align teal-text text-lighten-5">
-              <span class="modal-close material-symbols-outlined non-fill"
-                >star</span
+              <span
+                v-if="localCurrentContact.inFavourites"
+                @click="changeFavourites"
+                class="modal-close material-symbols-outlined"
               >
-              <span class="modal-close material-symbols-outlined">star</span>
-              <span class="modal-close material-symbols-outlined">edit</span>
-              <span class="modal-close material-symbols-outlined">delete</span>
+                star
+              </span>
+              <span
+                v-else
+                @click="changeFavourites"
+                class="modal-close material-symbols-outlined non-fill"
+              >
+                star
+              </span>
+              <span
+                href="#modal4"
+                class="material-symbols-outlined modal-trigger modal-close"
+                >edit</span
+              >
+              <span
+                @click="deleteContact"
+                class="modal-close material-symbols-outlined"
+                >delete</span
+              >
             </div>
           </div>
-          <h5 class="center-align white-text">Петр Иванов</h5>
+          <h5 class="center-align white-text">
+            {{ localCurrentContact.name }} {{ localCurrentContact.familyName }}
+          </h5>
         </div>
         <div class="bottom">
           <div class="container">
@@ -31,7 +74,9 @@ export default {}
                     class="waves-effect collection-item avatar transparent z-depth-1"
                   >
                     <i class="material-icons circle teal darken-3">person</i>
-                    <span class="title"><b>0991234567</b></span>
+                    <span class="title"
+                      ><b>{{ localCurrentContact.phoneNumber }}</b></span
+                    >
                     <p>
                       <i>Позавчера</i>
                     </p>

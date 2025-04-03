@@ -1,9 +1,10 @@
 <script>
-import AddContactModal1 from './AddContactModal1.vue'
-import Calls from './Calls.vue'
-import Contacts from './Contacts.vue'
-import FavouriteContacts from './FavouriteContacts.vue'
-import ContactDetailed from './ContactDetailed.vue'
+import AddContactModal1 from './components/AddContactModal1.vue'
+import Calls from './components/Calls.vue'
+import Contacts from './components/Contacts.vue'
+import FavouriteContacts from './components/FavouriteContacts.vue'
+import ContactDetailed from './components/ContactDetailed.vue'
+import EditContactModal4 from './components/EditContactModal4.vue'
 
 export default {
   components: {
@@ -12,6 +13,7 @@ export default {
     FavouriteContacts,
     AddContactModal1,
     ContactDetailed,
+    EditContactModal4,
   },
 
   data() {
@@ -19,7 +21,40 @@ export default {
       contacts: [],
       calles: [],
       favouriteContacts: [],
+      currentContact: {},
     }
+  },
+
+  watch: {
+    currentContact(newValue, oldValue) {
+      console.log('currentContact', newValue)
+      // console.log(oldValue)
+    },
+    contacts: {
+      deep: true,
+      handler() {
+        console.log('contacts', this.contacts)
+      },
+    },
+  },
+  methods: {
+    updateContact(updatedContact) {
+      this.contacts = this.contacts.map(contact =>
+        contact.id === updatedContact.id ? (contact = updatedContact) : contact
+      )
+      this.currentContact = updatedContact
+    },
+
+    getFavourites() {
+      this.favouriteContacts = this.contacts.filter(contact => {
+        return contact.inFavourites
+      })
+    },
+    deleteContact(deletedContact) {
+      this.contacts = this.contacts.filter(contact => {
+        return contact.id != deletedContact.id
+      })
+    },
   },
 }
 </script>
@@ -47,7 +82,7 @@ export default {
 
       <div class="nav-content">
         <ul class="tabs tabs-transparent">
-          <li class="tab">
+          <li @click="getFavourites" class="tab">
             <a href="#tab-1">
               <span class="material-symbols-outlined">star</span>
             </a>
@@ -67,9 +102,12 @@ export default {
     </nav>
 
     <div>
-      <FavouriteContacts />
+      <FavouriteContacts :favouriteContacts />
       <Calls />
-      <Contacts :contacts="contacts" />
+      <Contacts
+        :contacts="contacts"
+        @currentContact="currentContact = $event"
+      />
     </div>
   </div>
 
@@ -77,8 +115,15 @@ export default {
 
   <AddContactModal1 @contact-added="contacts.push($event)" />
 
-  <ContactDetailed />
-
+  <ContactDetailed
+    :currentContact="currentContact"
+    @updatedContact="updateContact"
+    @deletedContact="deleteContact"
+  />
+  <EditContactModal4
+    :currentContact="currentContact"
+    @editedContact="updateContact"
+  />
   <div id="modal3" class="modal bottom-sheet modal-close non-overlay">
     <div class="modal-content">
       <div class="wrap-content">

@@ -1,72 +1,65 @@
 <script>
-const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
-
-const initContact = () => ({
-  id: makeId(),
-  name: '',
-  familyName: '',
-  phoneNumber: '',
-  email: '',
-  city: '',
-  inFavourites: false,
-})
 export default {
-  emits: ['contact-added'],
-
+  props: ['currentContact'],
+  emits: ['editedContact'],
   data() {
     return {
-      contact: initContact(),
+      localCurrentContact: { ...this.currentContact },
     }
   },
+  watch: {
+    currentContact(newValue) {
+      this.localCurrentContact = { ...newValue }
+      console.log('editContact', this.localCurrentContact)
+    },
+  },
   methods: {
-    addContact() {
-      this.$emit('contact-added', this.contact)
-      this.contact = initContact()
+    editContact() {
+      this.$emit('editedContact', this.localCurrentContact)
     },
   },
 }
 </script>
-
 <template>
-  <div id="modal1" class="modal bottom-sheet">
+  <div id="modal4" class="modal bottom-sheet">
     <div class="modal-content">
       <div class="wrap-content row">
-        <h5 class="header">Добавить контакт</h5>
+        <h5 class="header">Редактировать контакт</h5>
         <form class="col s12" autocomplete="off">
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="contact.name"
+                v-model="localCurrentContact.name"
                 id="firstName"
                 name="firstName"
                 type="text"
                 autocomplete="new-password"
               />
-              <label for="firstName">Имя</label>
+              <label for="firstName" class="active">Имя</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="contact.familyName"
+                v-model="localCurrentContact.familyName"
                 id="secondName"
                 name="secondName"
                 type="text"
                 autocomplete="new-password"
               />
-              <label for="secondName">Фамилия</label>
+              <label for="secondName" class="active">Фамилия</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="contact.phoneNumber"
+                v-model="localCurrentContact.phoneNumber"
                 id="phone"
                 name="phone"
                 type="tel"
                 autocomplete="new-password"
               />
-              <label for="phone">Телефон</label>
+              <label for="phone" class="active">Телефон</label>
             </div>
           </div>
           <!-- <div class="row">
@@ -96,7 +89,7 @@ export default {
           <div class="row">
             <div class="col s12 center-align wrap-form-buttons">
               <div class="input-reset">
-                <input type="reset" id="reset" class="" />
+                <!-- <input type="reset" id="reset" class="" /> -->
                 <label
                   for="reset"
                   class="transparent teal-text waves-effect waves-light btn modal-close"
@@ -106,12 +99,12 @@ export default {
                 </label>
               </div>
               <a
-                @click="addContact"
+                @click="editContact"
                 id="appAddContact"
                 class="btn-ok waves-effect waves-light btn modal-close"
               >
                 <i class="material-icons left">check</i>
-                <span>Добавить</span>
+                <span>Редактировать</span>
               </a>
             </div>
           </div>

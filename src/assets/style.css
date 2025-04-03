@@ -117,6 +117,16 @@ nav.nav-extended form input:focus {
   height: calc(100vh);
 }
 
+#modal4.bottom-sheet {
+  max-height: calc(100vh);
+  height: calc(100vh);
+  &.wrap-form-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+}
+
 #modal2.bottom-sheet {
   max-height: calc(60vh);
   height: calc(60vh);

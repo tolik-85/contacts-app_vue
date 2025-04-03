@@ -4,7 +4,7 @@ import Contact from './Contact.vue'
 export default {
   props: ['contacts'],
 
-  // emits: ['update:model-value'],
+  emits: ['currentContact'],
 
   components: { Contact },
 }
@@ -13,16 +13,12 @@ export default {
 <template>
   <div id="tab-3" class="col s12">
     <ul id="app-contacts" class="collection">
-      <li
+      <Contact
         v-for="contact of contacts"
         :key="contact.id"
-        href="#modal2"
-        class="contact modal-trigger collection-item transparent waves-effect"
-      >
-        <div class="container">
-          <Contact :contact />
-        </div>
-      </li>
+        :contact
+        @click="$emit('currentContact', { ...contact })"
+      />
     </ul>
     <div class="fixed-action-btn">
       <a
