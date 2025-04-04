@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       contacts: [],
-      calles: [], // recentCalls
+      recentCalls: [], // recentCalls
       currentContact: {},
     }
   },
@@ -87,8 +87,22 @@ export default {
     </nav>
 
     <div>
-      <FavouriteContacts :favouriteContacts />
-      <Calls />
+      <FavouriteContacts
+        :favouriteContacts
+        @made-call="recentCalls.push($event)"
+      />
+
+      <div id="tab-2" class="col s12">
+        <div class="container">
+          <div class="row valign-wrapper">
+            <div class="recent-call col s12">
+              <ul id="app-recent-calls" class="collection">
+                <Calls v-for="call of recentCalls" :id="idx" :call />
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
       <Contacts
         :contacts="contacts"
         @current-contact="currentContact = $event"
@@ -104,6 +118,7 @@ export default {
     :currentContact="currentContact"
     @updatedContact="updateContact"
     @deletedContact="deleteContact"
+    @made-call="recentCalls.push($event)"
   />
   <EditContactModal4
     :currentContact="currentContact"

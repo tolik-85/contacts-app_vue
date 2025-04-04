@@ -1,6 +1,9 @@
 <script>
 export default {
   props: ['currentContact'],
+
+  emits: ['made-call'],
+
   data() {
     return {
       localCurrentContact: { ...this.currentContact },
@@ -67,7 +70,10 @@ export default {
         </div>
         <div class="bottom">
           <div class="container">
-            <div class="row valign-wrapper">
+            <div
+              @click="$emit('made-call', localCurrentContact.phoneNumber)"
+              class="row valign-wrapper"
+            >
               <div class="col s12">
                 <ul class="collection">
                   <li

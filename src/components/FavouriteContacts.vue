@@ -3,6 +3,7 @@ import FavouriteContact from './FavouriteContact.vue'
 export default {
   components: { FavouriteContact },
   props: ['favouriteContacts'],
+  emits: [],
 }
 </script>
 
@@ -14,6 +15,7 @@ export default {
           v-for="favouriteContact of favouriteContacts"
           :key="favouriteContact.id"
           :favouriteContact
+          @made-call="$emit('made-call', $event)"
         />
       </div>
     </div>
