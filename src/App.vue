@@ -19,8 +19,8 @@ export default {
   data() {
     return {
       contacts: [],
-      recentCalls: [], // recentCalls
-      currentContact: {},
+      recentCalls: [],
+      currentContact: {}, // selectedContact
     }
   },
 
