@@ -6,6 +6,18 @@ import FavouriteContacts from './components/FavouriteContacts.vue'
 import ContactDetailed from './components/ContactDetailed.vue'
 import EditContactModal4 from './components/EditContactModal4.vue'
 
+import myStorage from './myStorage.js'
+import SearchContacts from './components/SearchContacts.vue'
+import UiNavigationBar from './ui/UiNavigationBar.vue'
+
+// const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
+// const addRecentCallByPhone = phone => ({
+//   id: makeId(),
+//   name: this.localCurrentContact.name,
+//   familyName: this.localCurrentContact.familyName,
+//   phoneNumber: this.localCurrentContact.phoneNumber,
+// })
+
 export default {
   components: {
     Calls,
@@ -14,11 +26,13 @@ export default {
     AddContactModal1,
     ContactDetailed,
     EditContactModal4,
+    SearchContacts,
+    UiNavigationBar,
   },
 
   data() {
     return {
-      contacts: [],
+      contacts: myStorage.getContacts(),
       recentCalls: [],
       currentContact: {}, // selectedContact
     }
@@ -34,26 +48,29 @@ export default {
     contacts: {
       deep: true,
       handler(newValue) {
-        localStorage.setItem('contacts', JSON.stringify(newValue))
+        myStorage.setContacts(newValue)
       },
     },
-    recentCalls: {
-      deep: true,
-      handler(newValue) {
-        localStorage.setItem('recentCalls', JSON.stringify(newValue))
-      },
-    },
+
+    // recentCalls: {
+    //   deep: true,
+    //   handler(newValue) {
+    //     localStorage.setItem('recentCalls', JSON.stringify(newValue))
+    //   },
+    // },
   },
-  mounted() {
-    const contactsFromStorage = JSON.parse(localStorage.getItem('contacts'))
-    const recentCallsFromStorage = JSON.parse(localStorage.getItem('contacts'))
-    if (contactsFromStorage) {
-      this.contacts = contactsFromStorage
-    }
-    if (recentCallsFromStorage) {
-      this.recentCalls = recentCallsFromStorage
-    }
-  },
+
+  // mounted() {
+  //   const contactsFromStorage = JSON.parse(localStorage.getItem('contacts'))
+  //   const recentCallsFromStorage = JSON.parse(localStorage.getItem('contacts'))
+  //   if (contactsFromStorage) {
+  //     this.contacts = contactsFromStorage
+  //   }
+  //   if (recentCallsFromStorage) {
+  //     this.recentCalls = recentCallsFromStorage
+  //   }
+  // },
+
   methods: {
     updateContact(updatedContact) {
       this.contacts = this.contacts.map(c =>
@@ -70,50 +87,12 @@ export default {
 
 <template>
   <div class="wrapper teal lighten-5">
-    <nav class="nav-extended teal">
-      <div class="nav-wrapper">
-        <form>
-          <div class="input-field">
-            <input
-              class="teal-text text-lighten-5"
-              id="search"
-              type="search"
-              placeholder="Поиск в контактах"
-              required
-            />
-            <label class="label-icon" for="search"
-              ><i class="material-icons">search</i></label
-            >
-            <i class="material-icons">close</i>
-          </div>
-        </form>
-      </div>
-
-      <div class="nav-content">
-        <ul class="tabs tabs-transparent">
-          <li class="tab">
-            <a href="#tab-1">
-              <span class="material-symbols-outlined">star</span>
-            </a>
-          </li>
-          <li class="tab">
-            <a href="#tab-2">
-              <span class="material-symbols-outlined">chronic</span>
-            </a>
-          </li>
-          <li class="tab">
-            <a class="active" href="#tab-3">
-              <span class="material-symbols-outlined">people</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <UiNavigationBar />
 
     <div>
       <FavouriteContacts
         :favouriteContacts
-        @made-call="recentCalls.push($event)"
+        @made-call="recentCalls.unshift($event)"
       />
 
       <div id="tab-2" class="col s12">
@@ -121,16 +100,13 @@ export default {
           <div class="row valign-wrapper">
             <div class="recent-call col s12">
               <ul id="app-recent-calls" class="collection">
-                <Calls
-                  v-for="(call, idx) of recentCalls.toReversed()"
-                  :key="idx"
-                  :call
-                />
+                <Calls v-for="(call, idx) of recentCalls" :key="idx" :call />
               </ul>
             </div>
           </div>
         </div>
       </div>
+
       <Contacts
         :contacts="contacts"
         @current-contact="currentContact = $event"
@@ -146,27 +122,13 @@ export default {
     :currentContact="currentContact"
     @updatedContact="updateContact"
     @deletedContact="deleteContact"
-    @made-call="recentCalls.push($event)"
+    @made-call="recentCalls.unshift($event)"
   />
+
   <EditContactModal4
     :currentContact="currentContact"
     @editedContact="updateContact"
   />
-  <div id="modal3" class="modal bottom-sheet modal-close non-overlay">
-    <div class="modal-content">
-      <div class="wrap-content">
-        <h5 class="header">Найдено:</h5>
-        <ul class="collection">
-          <!-- <li class="collection-item avatar">
-              <i class="material-icons circle green">assessment</i>
-              <span class="title">Title</span>
-              <p>First Line</p>
-              <a href="#!" class="secondary-content">
-                <i class="material-icons">phone</i>
-              </a>
-            </li> -->
-        </ul>
-      </div>
-    </div>
-  </div>
+
+  <SearchContacts />
 </template>

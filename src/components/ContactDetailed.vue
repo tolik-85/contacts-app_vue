@@ -12,21 +12,25 @@ export default {
       call: '',
     }
   },
+
   watch: {
     currentContact(newValue) {
       this.localCurrentContact = { ...newValue }
       // console.log(this.localCurrentContact)
     },
   },
+
   methods: {
     changeFavourites() {
       this.localCurrentContact.inFavourites =
         !this.localCurrentContact.inFavourites
       this.$emit('updatedContact', this.localCurrentContact)
     },
+
     deleteContact() {
       this.$emit('deletedContact', this.localCurrentContact)
     },
+
     initCall() {
       return {
         id: makeId(),
@@ -35,6 +39,7 @@ export default {
         phoneNumber: this.localCurrentContact.phoneNumber,
       }
     },
+
     makeCall() {
       this.call = this.initCall()
       this.$emit('made-call', this.call)
