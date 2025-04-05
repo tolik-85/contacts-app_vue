@@ -1,11 +1,6 @@
 <script>
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
-const initCall = () => ({
-  id: makeId(),
-  name: favouriteContact.name,
-  familyName: favouriteContact.familyName,
-  phoneNumber: favouriteContact.phoneNumber,
-})
+
 export default {
   props: ['favouriteContact'],
 
