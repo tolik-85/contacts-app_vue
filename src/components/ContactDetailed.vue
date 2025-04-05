@@ -1,12 +1,15 @@
 <script>
+const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
+
 export default {
   props: ['currentContact'],
 
-  emits: ['made-call'],
+  emits: ['made-call', 'updatedContact', 'deletedContact'],
 
   data() {
     return {
       localCurrentContact: { ...this.currentContact },
+      call: '',
     }
   },
   watch: {
@@ -23,6 +26,18 @@ export default {
     },
     deleteContact() {
       this.$emit('deletedContact', this.localCurrentContact)
+    },
+    initCall() {
+      return {
+        id: makeId(),
+        name: this.localCurrentContact.name,
+        familyName: this.localCurrentContact.familyName,
+        phoneNumber: this.localCurrentContact.phoneNumber,
+      }
+    },
+    makeCall() {
+      this.call = this.initCall()
+      this.$emit('made-call', this.call)
     },
   },
 }
@@ -70,14 +85,11 @@ export default {
         </div>
         <div class="bottom">
           <div class="container">
-            <div
-              @click="$emit('made-call', localCurrentContact.phoneNumber)"
-              class="row valign-wrapper"
-            >
+            <div @click="makeCall" class="row valign-wrapper">
               <div class="col s12">
                 <ul class="collection">
                   <li
-                    class="waves-effect collection-item avatar transparent z-depth-1"
+                    class="modal-close waves-effect collection-item avatar transparent z-depth-1"
                   >
                     <i class="material-icons circle teal darken-3">person</i>
                     <span class="title"

@@ -1,15 +1,42 @@
 <script>
+const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
+const initCall = () => ({
+  id: makeId(),
+  name: favouriteContact.name,
+  familyName: favouriteContact.familyName,
+  phoneNumber: favouriteContact.phoneNumber,
+})
 export default {
   props: ['favouriteContact'],
 
   emits: ['made-call'],
+
+  data() {
+    return {
+      call: '',
+    }
+  },
+  mounted() {
+    this.call = this.initCall()
+  },
+  methods: {
+    initCall() {
+      return {
+        id: makeId(),
+        name: this.favouriteContact.name,
+        familyName: this.favouriteContact.familyName,
+        phoneNumber: this.favouriteContact.phoneNumber,
+      }
+    },
+    makeCall() {
+      this.call = this.initCall()
+      this.$emit('made-call', this.call)
+    },
+  },
 }
 </script>
 <template>
-  <div
-    @click="$emit('made-call', favouriteContact.phoneNumber)"
-    class="favorite col s6 m4 l3 xl2"
-  >
+  <div @click="makeCall" class="favorite col s6 m4 l3 xl2">
     <div class="card-panel teal lighten-2 waves-effect waves-light">
       <div class="center-align">
         <span

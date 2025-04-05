@@ -10,7 +10,8 @@ export default {
   >
     <i class="material-icons circle teal darken-3">person</i>
     <span class="title"
-      ><b>{{ call }}</b></span
+      ><b>{{ call.name }} {{ call.familyName }}</b
+      ><br />{{ call.phoneNumber }}</span
     >
     <p>
       <i>Позавчера</i>

@@ -30,6 +30,30 @@ export default {
     },
   },
 
+  watch: {
+    contacts: {
+      deep: true,
+      handler(newValue) {
+        localStorage.setItem('contacts', JSON.stringify(newValue))
+      },
+    },
+    recentCalls: {
+      deep: true,
+      handler(newValue) {
+        localStorage.setItem('recentCalls', JSON.stringify(newValue))
+      },
+    },
+  },
+  mounted() {
+    const contactsFromStorage = JSON.parse(localStorage.getItem('contacts'))
+    const recentCallsFromStorage = JSON.parse(localStorage.getItem('contacts'))
+    if (contactsFromStorage) {
+      this.contacts = contactsFromStorage
+    }
+    if (recentCallsFromStorage) {
+      this.recentCalls = recentCallsFromStorage
+    }
+  },
   methods: {
     updateContact(updatedContact) {
       this.contacts = this.contacts.map(c =>
@@ -97,7 +121,11 @@ export default {
           <div class="row valign-wrapper">
             <div class="recent-call col s12">
               <ul id="app-recent-calls" class="collection">
-                <Calls v-for="call of recentCalls" :id="idx" :call />
+                <Calls
+                  v-for="(call, idx) of recentCalls.toReversed()"
+                  :key="idx"
+                  :call
+                />
               </ul>
             </div>
           </div>

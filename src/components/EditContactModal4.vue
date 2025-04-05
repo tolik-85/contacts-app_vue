@@ -7,12 +7,12 @@ export default {
       localCurrentContact: { ...this.currentContact },
     }
   },
-  watch: {
-    currentContact(newValue) {
-      this.localCurrentContact = { ...newValue }
-      console.log('editContact', this.localCurrentContact)
-    },
-  },
+  // watch: {
+  //   currentContact(newValue) {
+  //     this.localCurrentContact = { ...newValue }
+  //     console.log('editContact', this.localCurrentContact)
+  //   },
+  // },
   methods: {
     editContact() {
       this.$emit('editedContact', this.localCurrentContact)
