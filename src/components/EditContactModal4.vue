@@ -7,15 +7,16 @@ export default {
       localSelectedContact: { ...this.selectedContact },
     }
   },
-  // watch: {
-  //   selectedContact(newValue) {
-  //     this.localSelectedContact = { ...newValue }
-  //     console.log('editContact', this.localSelectedContact)
-  //   },
-  // },
+  watch: {
+    selectedContact(newValue) {
+      this.localSelectedContact = { ...newValue }
+      console.log('editContact', this.localSelectedContact)
+    },
+  },
   methods: {
     editContact() {
       this.$emit('editedContact', this.localSelectedContact)
+      console.log(this.localSelectedContact)
     },
   },
 }

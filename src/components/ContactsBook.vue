@@ -1,8 +1,8 @@
 <script>
-import Contact from './Contact.vue'
+import SingleContact from './SingleContact.vue'
 
 export default {
-  components: { Contact },
+  components: { SingleContact },
 
   props: ['contacts'],
 
@@ -13,7 +13,7 @@ export default {
 <template>
   <div id="tab-3" class="col s12">
     <ul id="app-contacts" class="collection">
-      <Contact
+      <SingleContact
         v-for="contact of contacts"
         :key="contact.id"
         :contact

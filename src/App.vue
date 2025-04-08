@@ -1,7 +1,7 @@
 <script>
 import AddContactModal1 from './components/AddContactModal1.vue'
-import Calls from './components/Calls.vue'
-import Contacts from './components/Contacts.vue'
+import RacentCallsCalls from './components/RacentCalls.vue'
+import ContactsBook from './components/ContactsBook.vue'
 import FavouriteContacts from './components/FavouriteContacts.vue'
 import ContactDetailed from './components/ContactDetailed.vue'
 import EditContactModal4 from './components/EditContactModal4.vue'
@@ -12,8 +12,8 @@ import UiNavigationBar from './ui/UiNavigationBar.vue'
 
 export default {
   components: {
-    Calls,
-    Contacts,
+    RacentCallsCalls,
+    ContactsBook,
     FavouriteContacts,
     AddContactModal1,
     ContactDetailed,
@@ -83,6 +83,12 @@ export default {
 
   mounted() {
     window.app = this
+
+    // setInterval(() => {
+    //   const randomPhone =
+    //     '+38097' + Math.floor(1000000 + Math.random() * 9000000)
+    //   this.makeCall(randomPhone)
+    // }, 10000)
   },
 }
 </script>
@@ -102,14 +108,18 @@ export default {
           <div class="row valign-wrapper">
             <div class="recent-call col s12">
               <ul id="app-recent-calls" class="collection">
-                <Calls v-for="(call, idx) of recentCalls" :key="idx" :call />
+                <RacentCallsCalls
+                  v-for="(call, idx) of recentCalls"
+                  :key="idx"
+                  :call
+                />
               </ul>
             </div>
           </div>
         </div>
       </div>
 
-      <Contacts
+      <ContactsBook
         :contacts="contacts"
         @selected-contact="selectedContact = $event"
       />
