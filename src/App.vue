@@ -1,5 +1,5 @@
 <script>
-import AddContactModal1 from './components/AddContactModal1.vue'
+import AddContactModal from './components/AddContactModal.vue'
 import RacentCallsCalls from './components/RacentCalls.vue'
 import ContactsBook from './components/ContactsBook.vue'
 import FavouriteContacts from './components/FavouriteContacts.vue'
@@ -15,7 +15,7 @@ export default {
     RacentCallsCalls,
     ContactsBook,
     FavouriteContacts,
-    AddContactModal1,
+    AddContactModal,
     ContactDetailed,
     EditContactModal4,
     SearchContacts,
@@ -128,7 +128,7 @@ export default {
 
   <!-- Modal Structure  -->
 
-  <AddContactModal1 @contact-added="contacts.push($event)" />
+  <AddContactModal @contact-added="contacts.push($event)" />
 
   <ContactDetailed
     :selectedContact="selectedContact"
