@@ -8,24 +8,12 @@ export default {
 
   data() {
     return {
-      call: '',
+      localFavouriteContact: { ...this.favouriteContact },
     }
   },
-  mounted() {
-    this.call = this.initCall()
-  },
   methods: {
-    initCall() {
-      return {
-        id: makeId(),
-        name: this.favouriteContact.name,
-        familyName: this.favouriteContact.familyName,
-        phoneNumber: this.favouriteContact.phoneNumber,
-      }
-    },
     makeCall() {
-      this.call = this.initCall()
-      this.$emit('made-call', this.call)
+      this.$emit('made-call', this.localFavouriteContact.phoneNumber)
     },
   },
 }

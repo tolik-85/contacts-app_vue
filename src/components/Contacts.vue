@@ -6,7 +6,7 @@ export default {
 
   props: ['contacts'],
 
-  emits: ['current-contact'],
+  emits: ['selected-contact'],
 }
 </script>
 
@@ -17,7 +17,7 @@ export default {
         v-for="contact of contacts"
         :key="contact.id"
         :contact
-        @click="$emit('current-contact', { ...contact })"
+        @click="$emit('selected-contact', { ...contact })"
       />
     </ul>
     <div class="fixed-action-btn">

@@ -3,7 +3,7 @@ import FavouriteContact from './FavouriteContact.vue'
 export default {
   components: { FavouriteContact },
   props: ['favouriteContacts'],
-  emits: [],
+  emits: ['made-call'],
 }
 </script>
 

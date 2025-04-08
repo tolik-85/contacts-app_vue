@@ -2,47 +2,37 @@
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
 export default {
-  props: ['currentContact'],
+  props: ['selectedContact'],
 
   emits: ['made-call', 'updatedContact', 'deletedContact'],
 
   data() {
     return {
-      localCurrentContact: { ...this.currentContact },
+      localSelectedContact: { ...this.selectedContact },
       call: '',
     }
   },
 
   watch: {
-    currentContact(newValue) {
-      this.localCurrentContact = { ...newValue }
-      // console.log(this.localCurrentContact)
+    selectedContact(newValue, oldValue) {
+      this.localSelectedContact = { ...newValue }
+      // console.log('Changed contact:', oldValue, '→', newValue)
     },
   },
 
   methods: {
     changeFavourites() {
-      this.localCurrentContact.inFavourites =
-        !this.localCurrentContact.inFavourites
-      this.$emit('updatedContact', this.localCurrentContact)
+      this.localSelectedContact.inFavourites =
+        !this.localSelectedContact.inFavourites
+      this.$emit('updatedContact', this.localSelectedContact)
     },
 
     deleteContact() {
-      this.$emit('deletedContact', this.localCurrentContact)
-    },
-
-    initCall() {
-      return {
-        id: makeId(),
-        name: this.localCurrentContact.name,
-        familyName: this.localCurrentContact.familyName,
-        phoneNumber: this.localCurrentContact.phoneNumber,
-      }
+      this.$emit('deletedContact', this.localSelectedContact)
     },
 
     makeCall() {
-      this.call = this.initCall()
-      this.$emit('made-call', this.call)
+      this.$emit('made-call', this.localSelectedContact.phoneNumber)
     },
   },
 }
@@ -59,7 +49,7 @@ export default {
             </div>
             <div class="col s6 right-align teal-text text-lighten-5">
               <span
-                v-if="localCurrentContact.inFavourites"
+                v-if="localSelectedContact.inFavourites"
                 @click="changeFavourites"
                 class="modal-close material-symbols-outlined"
               >
@@ -85,7 +75,8 @@ export default {
             </div>
           </div>
           <h5 class="center-align white-text">
-            {{ localCurrentContact.name }} {{ localCurrentContact.familyName }}
+            {{ localSelectedContact.name }}
+            {{ localSelectedContact.familyName }}
           </h5>
         </div>
         <div class="bottom">
@@ -98,7 +89,7 @@ export default {
                   >
                     <i class="material-icons circle teal darken-3">person</i>
                     <span class="title"
-                      ><b>{{ localCurrentContact.phoneNumber }}</b></span
+                      ><b>{{ localSelectedContact.phoneNumber }}</b></span
                     >
                     <p>
                       <i>Позавчера</i>

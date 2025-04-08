@@ -1,21 +1,21 @@
 <script>
 export default {
-  props: ['currentContact'],
+  props: ['selectedContact'],
   emits: ['editedContact'],
   data() {
     return {
-      localCurrentContact: { ...this.currentContact },
+      localSelectedContact: { ...this.selectedContact },
     }
   },
   // watch: {
-  //   currentContact(newValue) {
-  //     this.localCurrentContact = { ...newValue }
-  //     console.log('editContact', this.localCurrentContact)
+  //   selectedContact(newValue) {
+  //     this.localSelectedContact = { ...newValue }
+  //     console.log('editContact', this.localSelectedContact)
   //   },
   // },
   methods: {
     editContact() {
-      this.$emit('editedContact', this.localCurrentContact)
+      this.$emit('editedContact', this.localSelectedContact)
     },
   },
 }
@@ -29,7 +29,7 @@ export default {
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="localCurrentContact.name"
+                v-model="localSelectedContact.name"
                 id="firstName"
                 name="firstName"
                 type="text"
@@ -41,7 +41,7 @@ export default {
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="localCurrentContact.familyName"
+                v-model="localSelectedContact.familyName"
                 id="secondName"
                 name="secondName"
                 type="text"
@@ -53,7 +53,7 @@ export default {
           <div class="row">
             <div class="input-field col s12">
               <input
-                v-model="localCurrentContact.phoneNumber"
+                v-model="localSelectedContact.phoneNumber"
                 id="phone"
                 name="phone"
                 type="tel"
