@@ -22,7 +22,7 @@ export default {
     changeFavourites() {
       this.localSelectedContact.inFavourites =
         !this.localSelectedContact.inFavourites
-      this.$emit('updatedContact', this.localSelectedContact)
+      this.$emit('updatedContact', { ...this.localSelectedContact })
     },
 
     deleteContact() {
