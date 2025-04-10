@@ -2,7 +2,7 @@
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
 const initContact = () => ({
-  id: makeId(),
+  idCont: makeId(),
   name: '',
   familyName: '',
   phoneNumber: '',
@@ -42,7 +42,7 @@ export default {
                 type="text"
                 autocomplete="new-password"
               />
-              <label for="firstName">Имя</label>
+              <label for="firstName" class="active">Имя</label>
             </div>
           </div>
           <div class="row">
@@ -54,7 +54,7 @@ export default {
                 type="text"
                 autocomplete="new-password"
               />
-              <label for="secondName">Фамилия</label>
+              <label for="secondName" class="active">Фамилия</label>
             </div>
           </div>
           <div class="row">
@@ -66,7 +66,7 @@ export default {
                 type="tel"
                 autocomplete="new-password"
               />
-              <label for="phone">Телефон</label>
+              <label for="phone" class="active">Телефон</label>
             </div>
           </div>
           <!-- <div class="row">

@@ -1,6 +1,4 @@
 <script>
-const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
-
 export default {
   props: ['selectedContact'],
 
@@ -8,14 +6,14 @@ export default {
 
   data() {
     return {
-      localSelectedContact: { ...this.selectedContact },
+      localSelectedContact: JSON.parse(JSON.stringify(this.selectedContact)),
       call: '',
     }
   },
 
   watch: {
     selectedContact(newValue, oldValue) {
-      this.localSelectedContact = { ...newValue }
+      this.localSelectedContact = JSON.parse(JSON.stringify(newValue))
       // console.log('Changed contact:', oldValue, '→', newValue)
     },
   },

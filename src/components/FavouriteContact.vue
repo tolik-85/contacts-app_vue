@@ -8,8 +8,18 @@ export default {
 
   data() {
     return {
-      localFavouriteContact: { ...this.favouriteContact },
+      localFavouriteContact: JSON.parse(JSON.stringify(this.favouriteContact)),
+      // localFavouriteContact: { ...this.favouriteContact },
     }
+  },
+  watch: {
+    localFavouriteContact: {
+      deep: true,
+      handler(oldValue, newValue) {
+        console.log('localFavouriteContact oldValue', oldValue)
+        console.log('localFavouriteContact newValue', newValue)
+      },
+    },
   },
   methods: {
     makeCall() {
@@ -28,7 +38,8 @@ export default {
         >
       </div>
       <span class="white-text"
-        >{{ favouriteContact.name }} {{ favouriteContact.familyName }}</span
+        >{{ localFavouriteContact.name }}
+        {{ localFavouriteContact.familyName }}</span
       >
     </div>
   </div>

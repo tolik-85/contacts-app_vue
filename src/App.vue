@@ -1,6 +1,6 @@
 <script>
 import AddContactModal from './components/AddContactModal.vue'
-import RacentCallsCalls from './components/RacentCalls.vue'
+import RacentCalls from './components/RacentCalls.vue'
 import ContactsBook from './components/ContactsBook.vue'
 import FavouriteContacts from './components/FavouriteContacts.vue'
 import ContactDetailed from './components/ContactDetailed.vue'
@@ -12,7 +12,7 @@ import UiNavigationBar from './ui/UiNavigationBar.vue'
 
 export default {
   components: {
-    RacentCallsCalls,
+    RacentCalls,
     ContactsBook,
     FavouriteContacts,
     AddContactModal,
@@ -33,7 +33,29 @@ export default {
     // selectedContact: {
     //   deep: true,
     //   handler(oldValue, newValue) {
-    //     console.log(oldValue, newValue)
+    //     console.log('selectedContact newValue', newValue)
+    //     console.log('selectedContact oldValue', oldValue)
+    //   },
+    // },
+    contacts: {
+      deep: true,
+      handler(oldValue, newValue) {
+        console.log('contacts oldValue', oldValue)
+        console.log(' contacts newValue', newValue)
+      },
+    },
+    // recentCalls: {
+    //   deep: true,
+    //   handler(oldValue, newValue) {
+    //     console.log('recentCalls oldValue', oldValue)
+    //     console.log('recentCalls newValue', newValue)
+    //   },
+    // },
+    // favouriteContacts: {
+    //   deep: true,
+    //   handler(oldValue, newValue) {
+    //     console.log('favouriteContacts oldValue', oldValue)
+    //     console.log('favouriteContacts newValue', newValue)
     //   },
     // },
   },
@@ -41,10 +63,29 @@ export default {
     favouriteContacts() {
       return this.contacts.filter(contact => contact.inFavourites) // is
     },
+    enrichedRecentCalls() {
+      return this.recentCalls.map(call => {
+        const contact = this.contacts.find(
+          c => c.phoneNumber === call.phoneNumber
+        )
+
+        if (contact) {
+          return {
+            ...call,
+            name: contact.name,
+            familyName: contact.familyName,
+          }
+        }
+
+        return call
+      })
+    },
   },
 
   methods: {
     updateContact(updatedContact) {
+      console.log('updatedContact', updatedContact)
+
       this.contacts = this.contacts.map(c =>
         c.id === updatedContact.id ? updatedContact : c
       )
@@ -57,38 +98,43 @@ export default {
     makeCall(phoneNumber) {
       const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
-      const contactExist = this.contacts.find(
+      const contact = this.contacts.find(
         contact => contact.phoneNumber === phoneNumber
       )
+
       let call
-      if (contactExist) {
+
+      if (contact) {
         call = {
-          id: makeId(),
-          name: contactExist.name,
-          familyName: contactExist.familyName,
-          phoneNumber: phoneNumber,
+          idCall: makeId(),
+          ...contact, // копируем все поля контакта
         }
-        this.recentCalls.unshift(call)
       } else {
         call = {
-          id: makeId(),
-          name: 'Контакт не найден',
-          familyName: '',
+          idCall: makeId(),
           phoneNumber: phoneNumber,
         }
-        this.recentCalls.unshift(call)
       }
+
+      this.recentCalls.unshift(call)
     },
   },
 
   mounted() {
     window.app = this
 
-    // setInterval(() => {
-    //   const randomPhone =
-    //     '+38097' + Math.floor(1000000 + Math.random() * 9000000)
-    //   this.makeCall(randomPhone)
-    // }, 10000)
+    let counter = 0
+    const interval = setInterval(() => {
+      const randomPhone =
+        '+38097' + Math.floor(1000000 + Math.random() * 9000000)
+
+      this.makeCall(randomPhone)
+
+      counter++
+      if (counter >= 4) {
+        clearInterval(interval)
+      }
+    }, 30000)
   },
 }
 </script>
@@ -108,8 +154,8 @@ export default {
           <div class="row valign-wrapper">
             <div class="recent-call col s12">
               <ul id="app-recent-calls" class="collection">
-                <RacentCallsCalls
-                  v-for="(call, idx) of recentCalls"
+                <RacentCalls
+                  v-for="(call, idx) of enrichedRecentCalls"
                   :key="idx"
                   :call
                 />

@@ -4,13 +4,12 @@ export default {
   emits: ['editedContact'],
   data() {
     return {
-      localSelectedContact: { ...this.selectedContact },
+      localSelectedContact: JSON.parse(JSON.stringify(this.selectedContact)),
     }
   },
   watch: {
     selectedContact(newValue) {
-      this.localSelectedContact = { ...newValue }
-      console.log('editContact', this.localSelectedContact)
+      this.localSelectedContact = JSON.parse(JSON.stringify(newValue))
     },
   },
   methods: {
