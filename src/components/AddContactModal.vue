@@ -2,7 +2,7 @@
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
 const initContact = () => ({
-  idCont: makeId(),
+  id: makeId(),
   name: '',
   familyName: '',
   phoneNumber: '',
