@@ -7,20 +7,9 @@ export default {
   emits: ['made-call'],
 
   data() {
-    return {
-      localFavouriteContact: JSON.parse(JSON.stringify(this.favouriteContact)),
-      // localFavouriteContact: { ...this.favouriteContact },
-    }
+    return {}
   },
-  watch: {
-    localFavouriteContact: {
-      deep: true,
-      handler(oldValue, newValue) {
-        console.log('localFavouriteContact oldValue', oldValue)
-        console.log('localFavouriteContact newValue', newValue)
-      },
-    },
-  },
+
   methods: {
     makeCall() {
       this.$emit('made-call', this.localFavouriteContact.phoneNumber)
@@ -38,8 +27,7 @@ export default {
         >
       </div>
       <span class="white-text"
-        >{{ localFavouriteContact.name }}
-        {{ localFavouriteContact.familyName }}</span
+        >{{ favouriteContact.name }} {{ favouriteContact.familyName }}</span
       >
     </div>
   </div>
