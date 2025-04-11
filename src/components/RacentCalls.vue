@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  {{ call.contact }}
+  {{ call.contacts }}
   <li
     class="recent-call waves-effect collection-item avatar transparent z-depth-1"
   >

@@ -39,20 +39,20 @@ export default {
     //     console.log('selectedContact oldValue', oldValue)
     //   },
     // },
-    contacts: {
-      deep: true,
-      handler(oldValue, newValue) {
-        console.log('contacts oldValue', oldValue)
-        console.log(' contacts newValue', newValue)
-      },
-    },
-    // recentCalls: {
+    // contacts: {
     //   deep: true,
     //   handler(oldValue, newValue) {
-    //     console.log('recentCalls oldValue', oldValue)
-    //     console.log('recentCalls newValue', newValue)
-    //   },
+    //     console.log('contacts oldValue', oldValue)
+    //     console.log(' contacts newValue', newValue)
     // },
+    // },
+    recentCalls: {
+      deep: true,
+      handler(oldValue, newValue) {
+        console.log('recentCalls oldValue', oldValue)
+        console.log('recentCalls newValue', newValue)
+      },
+    },
     // favouriteContacts: {
     //   deep: true,
     //   handler(oldValue, newValue) {
@@ -91,8 +91,8 @@ export default {
         phoneNumber: phone,
         timestamp: Date.now(),
         get contact() {
-          console.log(this.self)
-          return this.self.contacts.find(c => c.phone === phone)
+          // console.log(this.self)
+          return this.self.contacts.find(c => c.phoneNumber === phone)
         },
       }
     },
@@ -119,8 +119,9 @@ export default {
 </script>
 
 <template>
-  {{ contacts }}
+  <!-- <b>recentCalls</b> {{ recentCalls }} -->
   <div class="wrapper teal lighten-5">
+    <b>recentCalls</b> {{ contacts }}
     <UiNavigationBar />
 
     <div>
