@@ -32,6 +32,16 @@ export default {
     makeCall() {
       this.$emit('made-call', this.localSelectedContact.phoneNumber)
     },
+    formatDate(ts) {
+      const date = new Date(ts)
+      return date.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    },
   },
 }
 </script>
@@ -90,7 +100,7 @@ export default {
                       ><b>{{ localSelectedContact.phoneNumber }}</b></span
                     >
                     <p>
-                      <i>Позавчера</i>
+                      <i>{{ formatDate(selectedContact.timestamp) }}</i>
                     </p>
                     <a href="#!" class="secondary-content">
                       <i class="material-icons">phone</i>

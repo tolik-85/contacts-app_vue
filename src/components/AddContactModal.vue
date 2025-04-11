@@ -9,6 +9,7 @@ const initContact = () => ({
   email: '',
   city: '',
   inFavourites: false,
+  timestamp: Date.now(),
 })
 export default {
   emits: ['contact-added'],

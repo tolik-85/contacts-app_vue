@@ -5,6 +5,18 @@ export default {
   data() {
     return {}
   },
+  methods: {
+    formatDate(ts) {
+      const date = new Date(ts)
+      return date.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    },
+  },
 }
 </script>
 <template>
@@ -22,7 +34,7 @@ export default {
       <br />
     </span>
     <p>
-      <i>Позавчера</i>
+      <i>{{ formatDate(call.timestamp) }}</i>
     </p>
     <a href="#!" class="secondary-content">
       <i class="material-icons">phone</i>

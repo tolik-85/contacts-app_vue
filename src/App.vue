@@ -1,7 +1,7 @@
 <script>
 import AddContactModal from './components/AddContactModal.vue'
 import RacentCalls from './components/RacentCalls.vue'
-import ContactsBook from './components/ContactsBook.vue'
+import ContactsList from './components/ContactsList.vue'
 import FavouriteContacts from './components/FavouriteContacts.vue'
 import ContactDetailed from './components/ContactDetailed.vue'
 import EditContactModal4 from './components/EditContactModal4.vue'
@@ -15,7 +15,7 @@ const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 export default {
   components: {
     RacentCalls,
-    ContactsBook,
+    ContactsList,
     FavouriteContacts,
     AddContactModal,
     ContactDetailed,
@@ -46,13 +46,13 @@ export default {
     //     console.log(' contacts newValue', newValue)
     // },
     // },
-    recentCalls: {
-      deep: true,
-      handler(oldValue, newValue) {
-        console.log('recentCalls oldValue', oldValue)
-        console.log('recentCalls newValue', newValue)
-      },
-    },
+    // recentCalls: {
+    //   deep: true,
+    //   handler(oldValue, newValue) {
+    //     console.log('recentCalls oldValue', oldValue)
+    //     console.log('recentCalls newValue', newValue)
+    //   },
+    // },
     // favouriteContacts: {
     //   deep: true,
     //   handler(oldValue, newValue) {
@@ -121,7 +121,7 @@ export default {
 <template>
   <!-- <b>recentCalls</b> {{ recentCalls }} -->
   <div class="wrapper teal lighten-5">
-    <!-- <b>recentCalls</b> {{ contacts }} -->
+    <!-- <b>recentCalls</b> {{ recentCalls }} -->
     <UiNavigationBar />
 
     <div>
@@ -135,7 +135,7 @@ export default {
         @made-call="addRecentCallByPhone($event)"
       />
 
-      <ContactsBook
+      <ContactsList
         :contacts="contacts"
         @selected-contact="selectedContact = $event"
       />
