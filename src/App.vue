@@ -5,8 +5,9 @@ import ContactsList from './components/ContactsList.vue'
 import FavouriteContacts from './components/FavouriteContacts.vue'
 import ContactDetailed from './components/ContactDetailed.vue'
 import EditContactModal4 from './components/EditContactModal4.vue'
-import SearchContacts from './components/SearchContacts.vue'
+import SearchContactsList from './components/SearchContactsList.vue'
 import UiNavigationBar from './ui/UiNavigationBar.vue'
+import searchContacts from '../functions/searchContacts.js'
 
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
@@ -20,15 +21,69 @@ export default {
     AddContactModal,
     ContactDetailed,
     EditContactModal4,
-    SearchContacts,
+    SearchContactsList,
     UiNavigationBar,
+    // searchContacts,
   },
 
   data() {
     return {
-      contacts: [],
+      contacts: [
+        {
+          id: 1888428661,
+          name: 'Vanya',
+          familyName: 'Сусанин',
+          phoneNumber: '+380974426328',
+          email: '',
+          city: '',
+          inFavourites: false,
+          timestamp: 1744410174595,
+        },
+        {
+          id: 4069932216,
+          name: 'Oleg',
+          familyName: 'Vanin',
+          phoneNumber: '+380974426328',
+          email: '',
+          city: '',
+          inFavourites: false,
+          timestamp: 1744410217021,
+        },
+        {
+          id: 3230975085,
+          name: 'Ihor',
+          familyName: 'Popov',
+          phoneNumber: '+380979213119',
+          email: '',
+          city: '',
+          inFavourites: false,
+          timestamp: 1744410234792,
+        },
+        {
+          id: 2528465224,
+          name: 'Oleg',
+          familyName: 'Vanin',
+          phoneNumber: '+380974426328',
+          email: '',
+          city: '',
+          inFavourites: false,
+          timestamp: 1744410256516,
+        },
+        {
+          id: 2363789236,
+          name: 'Vanya33333',
+          familyName: 'rrrrrr',
+          phoneNumber: '+380974426328',
+          email: '',
+          city: '',
+          inFavourites: false,
+          timestamp: 1744410266339,
+        },
+      ],
       recentCalls: [],
       selectedContact: {},
+      searchQuery: '',
+      searchedContacts: '',
     }
   },
   watch: {
@@ -101,6 +156,12 @@ export default {
       const recentCall = this.createRecentCallByPhone(phone)
       this.recentCalls.unshift(recentCall)
     },
+
+    onSearch(query) {
+      const results = searchContacts(query, this.contacts)
+      this.searchedContacts = results
+      console.log(this.searchedContacts)
+    },
   },
 
   created() {
@@ -121,8 +182,9 @@ export default {
 <template>
   <!-- <b>recentCalls</b> {{ recentCalls }} -->
   <div class="wrapper teal lighten-5">
-    <!-- <b>recentCalls</b> {{ recentCalls }} -->
-    <UiNavigationBar />
+    {{ searchQuery }}
+    <!-- {{ contacts }} -->
+    <UiNavigationBar @search-query="onSearch($event)" />
 
     <div>
       <FavouriteContacts
@@ -159,5 +221,5 @@ export default {
     @editedContact="updateContact"
   />
 
-  <SearchContacts />
+  <SearchContactsList :searchedContacts="searchedContacts" />
 </template>
