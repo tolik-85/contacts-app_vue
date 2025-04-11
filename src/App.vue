@@ -130,7 +130,10 @@ export default {
         @made-call="addRecentCallByPhone($event)"
       />
 
-      <RacentCalls :recentCalls="enrichedRecentCalls" />
+      <RacentCalls
+        :recentCalls="enrichedRecentCalls"
+        @made-call="addRecentCallByPhone($event)"
+      />
 
       <ContactsBook
         :contacts="contacts"

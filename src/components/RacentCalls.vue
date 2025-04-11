@@ -3,6 +3,7 @@ import RacentCall from './RacentCall.vue'
 export default {
   components: { RacentCall },
   props: ['recentCalls'],
+  emits: ['made-call'],
 }
 </script>
 
@@ -12,7 +13,12 @@ export default {
       <div class="row valign-wrapper">
         <div class="recent-call col s12">
           <ul id="app-recent-calls" class="collection">
-            <RacentCall v-for="call of recentCalls" :key="call.id" :call />
+            <RacentCall
+              v-for="call of recentCalls"
+              :key="call.id"
+              :call
+              @made-call="$emit('made-call', $event)"
+            />
           </ul>
         </div>
       </div>

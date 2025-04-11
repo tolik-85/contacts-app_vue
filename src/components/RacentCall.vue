@@ -1,6 +1,7 @@
 <script>
 export default {
   props: ['call'],
+  emits: ['made-call'],
   data() {
     return {}
   },
@@ -8,6 +9,7 @@ export default {
 </script>
 <template>
   <li
+    @click="$emit('made-call', this.call.phoneNumber)"
     class="recent-call waves-effect collection-item avatar transparent z-depth-1"
   >
     <i class="material-icons circle teal darken-3">person</i>
