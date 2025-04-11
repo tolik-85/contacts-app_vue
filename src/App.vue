@@ -121,7 +121,7 @@ export default {
 <template>
   <!-- <b>recentCalls</b> {{ recentCalls }} -->
   <div class="wrapper teal lighten-5">
-    <b>recentCalls</b> {{ contacts }}
+    <!-- <b>recentCalls</b> {{ contacts }} -->
     <UiNavigationBar />
 
     <div>
@@ -130,21 +130,7 @@ export default {
         @made-call="addRecentCallByPhone($event)"
       />
 
-      <div id="tab-2" class="col s12">
-        <div class="container">
-          <div class="row valign-wrapper">
-            <div class="recent-call col s12">
-              <ul id="app-recent-calls" class="collection">
-                <RacentCalls
-                  v-for="(call, idx) of recentCalls"
-                  :key="idx"
-                  :call
-                />
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <RacentCalls :recentCalls="enrichedRecentCalls" />
 
       <ContactsBook
         :contacts="contacts"

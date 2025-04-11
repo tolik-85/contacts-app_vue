@@ -12,7 +12,7 @@ export default {
 
   methods: {
     makeCall() {
-      this.$emit('made-call', this.localFavouriteContact.phoneNumber)
+      this.$emit('made-call', this.favouriteContact.phoneNumber)
     },
   },
 }
