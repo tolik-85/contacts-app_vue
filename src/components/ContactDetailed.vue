@@ -1,6 +1,6 @@
 <script>
 export default {
-  props: ['selectedContact'],
+  props: ['selectedContact', 'recentCalls'],
 
   emits: ['made-call', 'updatedContact', 'deletedContact'],
 
@@ -41,6 +41,13 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
       })
+    },
+  },
+  computed: {
+    contactCalls() {
+      return this.recentCalls
+        .filter(call => call.phoneNumber === this.selectedContact.phoneNumber)
+        .sort((a, b) => b.timestamp - a.timestamp)
     },
   },
 }
@@ -86,6 +93,7 @@ export default {
             {{ localSelectedContact.name }}
             {{ localSelectedContact.familyName }}
           </h5>
+          <b>selectedContact</b>{{ selectedContact }}
         </div>
         <div class="bottom">
           <div class="container">
@@ -108,6 +116,31 @@ export default {
                   </li>
                 </ul>
               </div>
+            </div>
+            <div class="wrap-content">
+              <h5 class="header">Звонки:</h5>
+              <ul class="collection">
+                <li
+                  v-for="call in contactCalls"
+                  :key="call.id"
+                  class="collection-item avatar modal-close"
+                >
+                  <i class="material-icons circle green">assessment</i>
+                  <span class="title">
+                    <p>{{ formatDate(call.timestamp) }}</p>
+                    {{ call.contact?.name }}
+                    {{ call.contact?.familyName }}
+                  </span>
+                  <p>{{ call.phoneNumber }}</p>
+
+                  <a href="#!" class="secondary-content"
+                    ><i class="material-icons">phone</i></a
+                  >
+                </li>
+                <li v-if="contactCalls.length === 0" class="collection-item">
+                  Звонков пока нет.
+                </li>
+              </ul>
             </div>
           </div>
         </div>

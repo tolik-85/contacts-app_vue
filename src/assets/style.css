@@ -128,8 +128,8 @@ nav.nav-extended form input:focus {
 }
 
 #modal2.bottom-sheet {
-  max-height: calc(60vh);
-  height: calc(60vh);
+  max-height: calc(80vh);
+  height: calc(80vh);
 }
 
 .non-overlay ~ .modal-overlay {
@@ -190,4 +190,16 @@ ul > a {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #fff;
+}
+.calls-for-contact .calls-list > li {
+  padding-bottom: 0;
+  background-attachment: red;
+}
+#modal2 .collection .collection-item {
+  background-color: transparent;
+  &:hover {
+    box-shadow: inset -3px -3px 25px -13px rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    cursor: pointer;
+  }
 }

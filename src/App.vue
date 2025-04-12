@@ -7,8 +7,9 @@ import ContactDetailed from './components/ContactDetailed.vue'
 import EditContactModal4 from './components/EditContactModal4.vue'
 import SearchContactsList from './components/SearchContactsList.vue'
 import UiNavigationBar from './ui/UiNavigationBar.vue'
+// functions
 import searchContacts from '../functions/searchContacts.js'
-
+// import makeId from '../functions/makeId.js'
 const makeId = () => Math.trunc(Math.random() * 0xffff_ffff)
 
 // import myStorage from './myStorage.js'
@@ -23,67 +24,68 @@ export default {
     EditContactModal4,
     SearchContactsList,
     UiNavigationBar,
-    // searchContacts,
   },
 
   data() {
     return {
-      contacts: [
-        {
-          id: 1888428661,
-          name: 'Vanya',
-          familyName: 'Сусанин',
-          phoneNumber: '+380974426328',
-          email: '',
-          city: '',
-          inFavourites: false,
-          timestamp: 1744410174595,
-        },
-        {
-          id: 4069932216,
-          name: 'Oleg',
-          familyName: 'Vanin',
-          phoneNumber: '+380974426328',
-          email: '',
-          city: '',
-          inFavourites: false,
-          timestamp: 1744410217021,
-        },
-        {
-          id: 3230975085,
-          name: 'Ihor',
-          familyName: 'Popov',
-          phoneNumber: '+380979213119',
-          email: '',
-          city: '',
-          inFavourites: false,
-          timestamp: 1744410234792,
-        },
-        {
-          id: 2528465224,
-          name: 'Oleg',
-          familyName: 'Vanin',
-          phoneNumber: '+380974426328',
-          email: '',
-          city: '',
-          inFavourites: false,
-          timestamp: 1744410256516,
-        },
-        {
-          id: 2363789236,
-          name: 'Vanya33333',
-          familyName: 'rrrrrr',
-          phoneNumber: '+380974426328',
-          email: '',
-          city: '',
-          inFavourites: false,
-          timestamp: 1744410266339,
-        },
-      ],
+      // contacts: [
+
+      //   {
+      //     id: 1888428661,
+      //     name: 'Vanya',
+      //     familyName: 'Сусанин',
+      //     phoneNumber: '+380974426327',
+      //     email: '',
+      //     city: '',
+      //     inFavourites: false,
+      //     timestamp: 1744410174595,
+      //   },
+      //   {
+      //     id: 4069932216,
+      //     name: 'Oleg',
+      //     familyName: 'Vanin',
+      //     phoneNumber: '+380974426328',
+      //     email: '',
+      //     city: '',
+      //     inFavourites: false,
+      //     timestamp: 1744410217021,
+      //   },
+      //   {
+      //     id: 3230975085,
+      //     name: 'Ihor',
+      //     familyName: 'Popov',
+      //     phoneNumber: '+380979213119',
+      //     email: '',
+      //     city: '',
+      //     inFavourites: false,
+      //     timestamp: 1744410234792,
+      //   },
+      //   {
+      //     id: 2528465224,
+      //     name: 'Oleg',
+      //     familyName: 'Vanin',
+      //     phoneNumber: '+380974426325',
+      //     email: '',
+      //     city: '',
+      //     inFavourites: false,
+      //     timestamp: 1744410256516,
+      //   },
+      //   {
+      //     id: 2363789236,
+      //     name: 'Vanya33333',
+      //     familyName: 'rrrrrr',
+      //     phoneNumber: '+380974426321',
+      //     email: '',
+      //     city: '',
+      //     inFavourites: false,
+      //     timestamp: 1744410266339,
+      //   },
+      // ],
       recentCalls: [],
       selectedContact: {},
       searchQuery: '',
-      searchedContacts: '',
+      searchedContacts: [],
+      contacts: [],
     }
   },
   watch: {
@@ -120,11 +122,22 @@ export default {
     favouriteContacts() {
       return this.contacts.filter(contact => contact.inFavourites) // is
     },
+    // enrichedRecentCalls() {
+    //   return this.recentCalls.map(rc => ({
+    //     ...rc,
+    //     contact: this.contacts.find(c => c.phoneNumber === rc.phoneNumber),
+    //   }))
+    // },
     enrichedRecentCalls() {
-      return this.recentCalls.map(rc => ({
-        ...rc,
-        contact: this.contacts.find(c => c.phoneNumber === rc.phoneNumber),
-      }))
+      return this.recentCalls.map(call => {
+        const contact = this.contacts.find(
+          contact => contact.phoneNumber === call.phoneNumber
+        )
+        return {
+          ...call,
+          contact: contact || null,
+        }
+      })
     },
   },
 
@@ -133,34 +146,78 @@ export default {
       this.contacts = this.contacts.map(c =>
         c.id === updatedContact.id ? updatedContact : c
       )
+      this.updateCallsWithNewContactData(updatedContact)
     },
 
     deleteContact(deletedContact) {
       this.contacts = this.contacts.filter(c => c.id != deletedContact.id)
     },
+    updateCallsWithNewContactData(updatedContact) {
+      this.recentCalls.forEach(call => {
+        // Если номер телефона совпадает, обновляем данные звонка
+        if (call.phoneNumber === updatedContact.phoneNumber) {
+          call.contact = updatedContact
+        }
+      })
+    },
+    // createRecentCallByPhone(phone) {
+    //   return {
+    //     self: this,
+    //     id: makeId(),
+    //     phoneNumber: phone,
+    //     timestamp: Date.now(),
+    //     get contact() {
+    //       // console.log(this.self)
+    //       return this.self.contacts.find(c => c.phoneNumber === phone)
+    //     },
+    //   }
+    // },
 
     createRecentCallByPhone(phone) {
       return {
-        self: this,
         id: makeId(),
         phoneNumber: phone,
         timestamp: Date.now(),
-        get contact() {
-          // console.log(this.self)
-          return this.self.contacts.find(c => c.phoneNumber === phone)
-        },
+        contact: this.contacts.find(c => c.phoneNumber === phone),
       }
     },
 
+    // addRecentCallByPhone(phone) {
+    //   const recentCall = this.createRecentCallByPhone(phone)
+    //   this.recentCalls.unshift(recentCall)
+    // },
     addRecentCallByPhone(phone) {
-      const recentCall = this.createRecentCallByPhone(phone)
-      this.recentCalls.unshift(recentCall)
+      const newCall = {
+        id: makeId(),
+        phoneNumber: phone,
+        timestamp: Date.now(),
+      }
+      this.recentCalls.unshift(newCall)
+      this.recentCalls = this.enrichRecentCalls(this.recentCalls)
     },
 
     onSearch(query) {
       const results = searchContacts(query, this.contacts)
       this.searchedContacts = results
-      console.log(this.searchedContacts)
+    },
+
+    enrichRecentCalls(calls) {
+      return calls.map(call => {
+        const matchingContact = this.contacts.find(
+          contact => contact.phoneNumber === call.phoneNumber
+        )
+        return {
+          ...call,
+          contact: matchingContact || null,
+        }
+      })
+    },
+    updateRecentCalls(updatedCalls) {
+      this.recentCalls = this.enrichRecentCalls(updatedCalls)
+    },
+    addContact(newContact) {
+      this.contacts.push(newContact)
+      this.recentCalls = this.enrichRecentCalls(this.recentCalls)
     },
   },
 
@@ -180,9 +237,10 @@ export default {
 </script>
 
 <template>
-  <!-- <b>recentCalls</b> {{ recentCalls }} -->
   <div class="wrapper teal lighten-5">
-    {{ searchQuery }}
+    <!-- <b>recentCalls</b> {{ recentCalls }} -->
+    <!-- <b>selectedContact</b>{{ selectedContact }} -->
+    <!-- {{ searchQuery }} -->
     <!-- {{ contacts }} -->
     <UiNavigationBar @search-query="onSearch($event)" />
 
@@ -206,10 +264,11 @@ export default {
 
   <!-- Modal Structure  -->
 
-  <AddContactModal @contact-added="contacts.push($event)" />
+  <AddContactModal @contact-added="addContact($event)" />
 
   <ContactDetailed
     :selectedContact="selectedContact"
+    :recentCalls="recentCalls"
     @updatedContact="updateContact"
     @deletedContact="deleteContact"
     @made-call="addRecentCallByPhone($event)"
@@ -221,5 +280,8 @@ export default {
     @editedContact="updateContact"
   />
 
-  <SearchContactsList :searchedContacts="searchedContacts" />
+  <SearchContactsList
+    :searchedContacts="searchedContacts"
+    @made-call="addRecentCallByPhone($event)"
+  />
 </template>

@@ -3,7 +3,7 @@ import SearchContactsItem from './SearchContactsItem.vue'
 export default {
   components: { SearchContactsItem },
   props: ['searchedContacts'],
-  // emits: ['made-call'],
+  emits: ['made-call'],
   data() {
     return {}
   },
@@ -16,6 +16,7 @@ export default {
         <h5 class="header">Найдено:</h5>
         <ul class="collection">
           <SearchContactsItem
+            @click="$emit('made-call', contact.phoneNumber)"
             v-for="contact in searchedContacts"
             :key="contact.id"
             :contact="contact"
