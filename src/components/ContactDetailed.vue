@@ -1,4 +1,6 @@
 <script>
+import formatCallTime from '../../functions/formatCallTime.js'
+
 export default {
   props: ['selectedContact', 'recentCalls'],
 
@@ -41,6 +43,30 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
       })
+    },
+    formatCallTime(timestamp) {
+      const now = new Date()
+      const callTime = new Date(timestamp)
+      const diffInSeconds = Math.floor((now - callTime) / 1000)
+
+      if (diffInSeconds < 60) {
+        return 'только что'
+      }
+
+      const minutes = Math.floor(diffInSeconds / 60)
+      let word = 'минут'
+
+      if (minutes === 1) {
+        word = 'минута'
+      } else if ([2, 3, 4].includes(minutes)) {
+        word = 'минуты'
+      }
+
+      if (minutes <= 10) {
+        return `${minutes} ${word} назад`
+      }
+
+      return formatDate(callTime)
     },
   },
   computed: {
@@ -93,7 +119,6 @@ export default {
             {{ localSelectedContact.name }}
             {{ localSelectedContact.familyName }}
           </h5>
-          <b>selectedContact</b>{{ selectedContact }}
         </div>
         <div class="bottom">
           <div class="container">
@@ -127,7 +152,7 @@ export default {
                 >
                   <i class="material-icons circle green">assessment</i>
                   <span class="title">
-                    <p>{{ formatDate(call.timestamp) }}</p>
+                    <p>{{ formatCallTime(call.timestamp) }}</p>
                     {{ call.contact?.name }}
                     {{ call.contact?.familyName }}
                   </span>

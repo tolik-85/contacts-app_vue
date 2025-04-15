@@ -3,8 +3,18 @@ export default {
   props: ['call'],
   emits: ['made-call'],
   data() {
-    return {}
+    return {
+      now: new Date(),
+      intervalId: null,
+    }
   },
+
+  mounted() {
+    this.intervalId = setInterval(() => {
+      this.now = new Date()
+    }, 60 * 1000)
+  },
+
   methods: {
     formatDate(ts) {
       const date = new Date(ts)
@@ -15,6 +25,33 @@ export default {
         hour: '2-digit',
         minute: '2-digit',
       })
+    },
+
+    formatCallTime(timestamp, now = new Date()) {
+      const callTime = new Date(timestamp)
+      const diffInSeconds = Math.floor((now - callTime) / 1000)
+
+      if (diffInSeconds < 60) {
+        return 'только что'
+      }
+
+      const minutes = Math.floor(diffInSeconds / 60)
+      let word = 'минут'
+
+      if (minutes === 1) word = 'минуту'
+      else if ([2, 3, 4].includes(minutes)) word = 'минуты'
+
+      if (minutes <= 10) {
+        return `${minutes} ${word} назад`
+      }
+
+      return formatDate(callTime)
+    },
+  },
+
+  computed: {
+    minutesAgo() {
+      return this.formatCallTime(this.call.timestamp, this.now)
     },
   },
 }
@@ -34,7 +71,7 @@ export default {
       <br />
     </span>
     <p>
-      <i>{{ formatDate(call.timestamp) }}</i>
+      <i>{{ minutesAgo }}</i>
     </p>
     <a href="#!" class="secondary-content">
       <i class="material-icons">phone</i>
