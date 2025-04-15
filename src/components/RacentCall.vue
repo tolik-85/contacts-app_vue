@@ -45,7 +45,7 @@ export default {
         return `${minutes} ${word} назад`
       }
 
-      return formatDate(callTime)
+      return this.formatDate(callTime)
     },
   },
 
