@@ -196,10 +196,16 @@ ul > a {
   background-attachment: red;
 }
 #modal2 .collection .collection-item {
+  display: flex;
+  align-items: center;
   background-color: transparent;
-  &:hover {
-    box-shadow: inset -3px -3px 25px -13px rgba(0, 0, 0, 0.75);
-    border-radius: 10px;
-    cursor: pointer;
-  }
+  padding: 0 0 0 72px;
+  min-height: 60px;
+  overflow-y: scroll;
+}
+#modal2 h5 {
+  margin: 0;
+}
+#modal2 {
+  overflow: auto;
 }

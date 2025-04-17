@@ -10,6 +10,8 @@ export default {
     return {
       localSelectedContact: JSON.parse(JSON.stringify(this.selectedContact)),
       call: '',
+      now: new Date(),
+      intervalId: null,
     }
   },
 
@@ -34,6 +36,7 @@ export default {
     makeCall() {
       this.$emit('made-call', this.localSelectedContact.phoneNumber)
     },
+
     formatDate(ts) {
       const date = new Date(ts)
       return date.toLocaleString('ru-RU', {
@@ -44,8 +47,8 @@ export default {
         minute: '2-digit',
       })
     },
-    formatCallTime(timestamp) {
-      const now = new Date()
+
+    formatCallTime(timestamp, now = new Date()) {
       const callTime = new Date(timestamp)
       const diffInSeconds = Math.floor((now - callTime) / 1000)
 
@@ -56,25 +59,33 @@ export default {
       const minutes = Math.floor(diffInSeconds / 60)
       let word = 'минут'
 
-      if (minutes === 1) {
-        word = 'минута'
-      } else if ([2, 3, 4].includes(minutes)) {
-        word = 'минуты'
-      }
+      if (minutes === 1) word = 'минуту'
+      else if ([2, 3, 4].includes(minutes)) word = 'минуты'
 
       if (minutes <= 10) {
         return `${minutes} ${word} назад`
       }
 
-      return formatDate(callTime)
+      return this.formatDate(callTime)
     },
   },
+
   computed: {
     contactCalls() {
       return this.recentCalls
         .filter(call => call.phoneNumber === this.selectedContact.phoneNumber)
         .sort((a, b) => b.timestamp - a.timestamp)
     },
+
+    minutesAgo() {
+      return this.formatCallTime(this.call.timestamp, this.now)
+    },
+  },
+
+  mounted() {
+    this.intervalId = setInterval(() => {
+      this.now = new Date()
+    }, 60 * 1000)
   },
 }
 </script>
@@ -152,15 +163,8 @@ export default {
                 >
                   <i class="material-icons circle green">assessment</i>
                   <span class="title">
-                    <p>{{ formatCallTime(call.timestamp) }}</p>
-                    {{ call.contact?.name }}
-                    {{ call.contact?.familyName }}
+                    <p>{{ formatCallTime(call.timestamp, now) }}</p>
                   </span>
-                  <p>{{ call.phoneNumber }}</p>
-
-                  <a href="#!" class="secondary-content"
-                    ><i class="material-icons">phone</i></a
-                  >
                 </li>
                 <li v-if="contactCalls.length === 0" class="collection-item">
                   Звонков пока нет.
